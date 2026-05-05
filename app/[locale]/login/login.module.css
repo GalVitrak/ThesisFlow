@@ -1,0 +1,27 @@
+.page {
+  max-width: 520px;
+  margin: 32px auto 48px;
+  padding: 16px;
+}
+
+.brandStrip {
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.welcome {
+  margin: 0 0 var(--space-4);
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+@media (min-width: 600px) {
+  .page {
+    margin-top: 48px;
+  }
+}

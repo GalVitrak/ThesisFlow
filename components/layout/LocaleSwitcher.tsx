@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import type { Locale } from "@/lib/i18n/config";
 import { locales } from "@/lib/i18n/config";
-import styles from "./TopBar.module.css";
+import styles from "./LocaleSwitcher.module.css";
 
 export function LocaleSwitcher({ active }: { active: Locale }) {
   const pathname = usePathname();
@@ -20,13 +20,14 @@ export function LocaleSwitcher({ active }: { active: Locale }) {
   }
 
   return (
-    <div className={styles.lang} role="group" aria-label="Language">
+    <div className={styles.group} role="group" aria-label="Language">
       {locales.map((l) => (
         <button
           key={l}
           type="button"
-          className={l === active ? styles.langActive : undefined}
+          className={`${styles.btn} ${l === active ? styles.active : ""}`}
           onClick={() => switchLocale(l)}
+          aria-pressed={l === active}
         >
           {l.toUpperCase()}
         </button>

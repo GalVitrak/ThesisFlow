@@ -1,0 +1,52 @@
+.wrap {
+  display: inline-block;
+  line-height: 0;
+  text-decoration: none;
+  transition: opacity 0.15s ease, transform 0.12s ease;
+}
+
+.wrap:hover {
+  opacity: 1;
+  transform: scale(1.01);
+  text-decoration: none;
+}
+
+.onDark {
+  opacity: 0.96;
+}
+
+.onLight {
+  opacity: 1;
+}
+
+.plate {
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  line-height: 0;
+}
+
+.onDark .plate {
+  background: #fff;
+  padding: var(--space-2) var(--space-3);
+  box-shadow: 0 2px 12px rgb(0 0 0 / 0.12);
+}
+
+.onLight .plate {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+}
+
+@media (max-width: 480px) {
+  .img {
+    max-width: 200px;
+  }
+}

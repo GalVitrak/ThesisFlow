@@ -20,8 +20,12 @@ out/
 
 # misc
 .DS_Store
+Thumbs.db
+Desktop.ini
 *.pem
 .env*.local
+.vercel
+.turbo
 
 # Firebase Admin SDK keys (never commit)
 *firebase-adminsdk*.json
@@ -39,4 +43,3 @@ firebase-debug.*.log
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts

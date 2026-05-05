@@ -4,9 +4,11 @@ import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useI18n } from "@/components/i18n/I18nProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { BrandBlock } from "@/components/branding/BrandBlock";
 import { Card } from "@/components/ui/Card";
 import { Field, TextInput } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
+import loginStyles from "./login.module.css";
 import {
   DEMO_SEED_PASSWORD,
   SEEDED_DEMO_ACCOUNTS,
@@ -38,8 +40,12 @@ function LoginForm() {
   }, []);
 
   return (
-    <div style={{ maxWidth: 520, margin: "48px auto", padding: 16 }}>
+    <div className={loginStyles.page}>
+      <div className={loginStyles.brandStrip}>
+        <BrandBlock variant="onLight" />
+      </div>
       <Card title={t("login.title")}>
+        <p className={loginStyles.welcome}>{t("login.welcomeSubtitle")}</p>
         <form
           onSubmit={async (e) => {
             e.preventDefault();

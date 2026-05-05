@@ -1,12 +1,24 @@
-# Firebase App Hosting — https://console.firebase.google.com/project/_/apphosting
-# Connect the repo in Console; set NEXT_PUBLIC_* in Console → Environment (overrides this file).
+# Settings for Backend (on Cloud Run).
+# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
 runConfig:
   minInstances: 0
+  # maxInstances: 100
+  # concurrency: 80
+  # cpu: 1
+  # memoryMiB: 512
+
+# Environment variables and secrets.
 # env:
-#   - variable: NEXT_PUBLIC_USE_FIREBASE
-#     value: "true"
-#     availability: [BUILD, RUNTIME]
-#   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-#     value: "…"
-#     availability: [BUILD, RUNTIME]
-#   (see .env.example for the rest)
+  # Configure environment variables.
+  # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
+  # - variable: MESSAGE
+  #   value: Hello world!
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+
+  # Grant access to secrets in Cloud Secret Manager.
+  # You can create secrets with the CLI command `firebase apphosting:secrets:set <secretName>`.
+  # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
+  # - variable: MY_SECRET
+  #   secret: mySecretRef
