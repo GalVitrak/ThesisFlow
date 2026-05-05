@@ -15,6 +15,7 @@ import { listSubmissions } from "@/lib/services/milestoneService";
 import { updateApplicationStatus } from "@/lib/services/applicationService";
 import { addReview } from "@/lib/services/reviewService";
 import { getAdminSnapshot } from "@/lib/services/adminSettingsService";
+import { listUsers } from "@/lib/services/userService";
 import type {
   ActiveProject,
   Application,
@@ -35,20 +36,24 @@ function ReviewsInner() {
   const [projects, setProjects] = useState<ActiveProject[]>([]);
   const [proposals, setProposals] = useState<ProjectProposal[]>([]);
   const [weightsLoaded, setWeightsLoaded] = useState<Awaited<ReturnType<typeof getAdminSnapshot>> | null>(null);
+  const [users, setUsers] = useState<{ id: string; displayName: string }[]>([]);
+  const [feedback, setFeedback] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const [apps, subs, projs, props, snap] = await Promise.all([
+    const [apps, subs, projs, props, snap, usr] = await Promise.all([
       listApplications(),
       listSubmissions(),
       listActiveProjects(),
       listProposals(),
       getAdminSnapshot(),
+      listUsers(),
     ]);
     setApplications(apps);
     setSubmissions(subs);
     setProjects(projs);
     setProposals(props);
     setWeightsLoaded(snap);
+    setUsers(usr.map((u) => ({ id: u.id, displayName: u.displayName })));
   }, []);
 
   useEffect(() => {
@@ -110,6 +115,7 @@ function ReviewsInner() {
 
   return (
     <AppShell title={t("reviews.title")} role={user.role}>
+      {feedback ? <p style={{ color: "var(--color-success)" }}>{feedback}</p> : null}
       {gradePreview != null ? (
         <p style={{ marginBottom: 16, color: "var(--color-muted)" }}>
           {locale === "he" ? "דוגמת חישוב ציון סופי (נתוני הדגמה): " : "Sample final grade (demo data): "}
@@ -125,6 +131,8 @@ function ReviewsInner() {
           <Tr>
             <Th>ID</Th>
             <Th>{t("proposals.status")}</Th>
+            <Th>סטודנט</Th>
+            <Th>פרויקט</Th>
             <Th>{t("reviews.comment")}</Th>
             <Th>{t("common.actions")}</Th>
           </Tr>
@@ -136,27 +144,30 @@ function ReviewsInner() {
               <Td>
                 <StatusBadge value={a.status} />
               </Td>
+              <Td>{users.find((u) => u.id === a.studentId)?.displayName ?? a.studentId}</Td>
+              <Td>{proposals.find((p) => p.id === a.proposalId)?.title ?? a.proposalId}</Td>
               <Td>{a.notes ?? "—"}</Td>
               <Td>
                 {user.role === "supervisor" || user.role === "admin" ? (
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                     {(
                       [
-                        ["approved", "approved"],
-                        ["rejected", "rejected"],
-                        ["meeting_requested", "meeting_requested"],
+                        ["approved", "אשר"],
+                        ["rejected", "דחה"],
+                        ["meeting_requested", "בקש פגישה"],
                       ] as const
-                    ).map(([key, st]) => (
+                    ).map(([statusValue, label]) => (
                       <Button
-                        key={key}
+                        key={statusValue}
                         size="sm"
                         variant="secondary"
                         onClick={async () => {
-                          await updateApplicationStatus(a.id, st as ApplicationStatus);
+                          await updateApplicationStatus(a.id, statusValue as ApplicationStatus);
+                          setFeedback("סטטוס המועמדות עודכן ונשלחה התראה.");
                           await load();
                         }}
                       >
-                        {t(`status.${st}` as "status.pending")}
+                        {label}
                       </Button>
                     ))}
                   </div>
@@ -220,6 +231,7 @@ function ReviewsInner() {
                           comment,
                           decision: dec as ReviewDecision,
                         });
+                        setFeedback("הסקירה נשמרה בהצלחה.");
                         await load();
                       }}
                     >

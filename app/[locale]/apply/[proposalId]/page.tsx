@@ -24,8 +24,10 @@ function ApplyInner() {
   const [loading, setLoading] = useState(true);
 
   const [cvUrl, setCvUrl] = useState("/mock/cv.pdf");
+  const [motivation, setMotivation] = useState("");
   const [grades, setGrades] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [ok, setOk] = useState<string | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -69,19 +71,24 @@ function ApplyInner() {
           onSubmit={async (e) => {
             e.preventDefault();
             setError(null);
+            setOk(null);
             try {
               await submitApplication({
                 proposalId: proposal.id,
                 studentId: user.id,
                 cvUrl,
-                gradesSummary: grades,
+                gradesSummary: `Motivation: ${motivation}\nGrades: ${grades}`,
               });
+              setOk("המועמדות נשלחה בהצלחה.");
               router.replace(`/${locale}/proposals`);
             } catch {
               setError(t("common.error"));
             }
           }}
         >
+          <Field label="מוטיבציה קצרה">
+            <TextArea value={motivation} onChange={(e) => setMotivation(e.target.value)} required />
+          </Field>
           <Field label={t("apply.cv")}>
             <TextInput value={cvUrl} onChange={(e) => setCvUrl(e.target.value)} />
           </Field>
@@ -89,6 +96,7 @@ function ApplyInner() {
             <TextArea value={grades} onChange={(e) => setGrades(e.target.value)} required />
           </Field>
           {error ? <p style={{ color: "var(--color-danger)" }}>{error}</p> : null}
+          {ok ? <p style={{ color: "var(--color-success)" }}>{ok}</p> : null}
           <Button type="submit" variant="primary">
             {t("apply.submit")}
           </Button>
