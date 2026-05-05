@@ -13,6 +13,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Field, TextInput, TextArea, Select } from "@/components/ui/Field";
 import type { DegreeType, Faculty, ProjectProposal, User } from "@/lib/types";
 import { createProposal, listProposals } from "@/lib/services/projectService";
+import { submitApplication } from "@/lib/services/applicationService";
 import { listFaculties } from "@/lib/services/adminSettingsService";
 import { listUsers } from "@/lib/services/userService";
 
@@ -21,6 +22,8 @@ function ProposalsInner() {
   const { user } = useAuth();
   const [facultyFilter, setFacultyFilter] = useState<string>("");
   const [openModal, setOpenModal] = useState(false);
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [activeProposal, setActiveProposal] = useState<ProjectProposal | null>(null);
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [degree, setDegree] = useState<DegreeType>("bachelor");
@@ -28,6 +31,10 @@ function ProposalsInner() {
   const [proposals, setProposals] = useState<ProjectProposal[]>([]);
   const [faculties, setFaculties] = useState<Faculty[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [motivation, setMotivation] = useState("");
+  const [cvLink, setCvLink] = useState("");
+  const [gradesFile, setGradesFile] = useState("");
+  const [feedback, setFeedback] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const [p, f, u] = await Promise.all([listProposals(), listFaculties(), listUsers()]);
@@ -74,6 +81,7 @@ function ProposalsInner() {
           </Button>
         ) : null}
       </div>
+      {feedback ? <p style={{ color: "var(--color-success)" }}>{feedback}</p> : null}
       <Table>
         <THead>
           <Tr>
@@ -82,6 +90,7 @@ function ProposalsInner() {
             <Th>{t("proposals.degree")}</Th>
             <Th>{t("proposals.supervisor")}</Th>
             <Th>{t("proposals.status")}</Th>
+            <Th>{t("proposalDetail.summary")}</Th>
             <Th>{t("common.actions")}</Th>
           </Tr>
         </THead>
@@ -99,11 +108,26 @@ function ProposalsInner() {
                   <StatusBadge value={p.status} />
                 </Td>
                 <Td>
+                  <div>{p.summary}</div>
+                  <div style={{ marginTop: 4, color: "var(--color-muted)", fontSize: "0.85rem" }}>
+                    {p.tags.join(", ")}
+                  </div>
+                </Td>
+                <Td>
                   <Link href={`/${locale}/proposals/${p.id}`}>{t("common.view")}</Link>
                   {user.role === "student" && p.status === "open" ? (
                     <>
                       {" · "}
-                      <Link href={`/${locale}/apply/${p.id}`}>{t("common.apply")}</Link>
+                      <button
+                        type="button"
+                        style={{ background: "none", border: "none", color: "var(--color-accent)", cursor: "pointer" }}
+                        onClick={() => {
+                          setActiveProposal(p);
+                          setApplyModalOpen(true);
+                        }}
+                      >
+                        {t("common.apply")}
+                      </button>
                     </>
                   ) : null}
                 </Td>
@@ -156,6 +180,42 @@ function ProposalsInner() {
           }}
         >
           {t("common.save")}
+        </Button>
+      </Modal>
+
+      <Modal
+        open={applyModalOpen}
+        title={activeProposal ? `הגשת מועמדות: ${activeProposal.title}` : t("common.apply")}
+        onClose={() => setApplyModalOpen(false)}
+      >
+        <Field label="מוטיבציה קצרה">
+          <TextArea value={motivation} onChange={(e) => setMotivation(e.target.value)} />
+        </Field>
+        <Field label="קישור קורות חיים (placeholder)">
+          <TextInput value={cvLink} onChange={(e) => setCvLink(e.target.value)} />
+        </Field>
+        <Field label="קובץ ציונים (placeholder)">
+          <TextInput value={gradesFile} onChange={(e) => setGradesFile(e.target.value)} />
+        </Field>
+        <Button
+          variant="primary"
+          onClick={async () => {
+            if (!user || !activeProposal) return;
+            await submitApplication({
+              proposalId: activeProposal.id,
+              studentId: user.id,
+              cvUrl: cvLink || "https://example.com/cv",
+              gradesSummary: `Motivation: ${motivation}\nGrades file: ${gradesFile || "placeholder"}`,
+            });
+            setApplyModalOpen(false);
+            setMotivation("");
+            setCvLink("");
+            setGradesFile("");
+            setFeedback("המועמדות נשלחה בהצלחה ונוצרה התראה למנחה.");
+            await load();
+          }}
+        >
+          {t("apply.submit")}
         </Button>
       </Modal>
     </AppShell>

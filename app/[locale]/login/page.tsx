@@ -28,6 +28,7 @@ function LoginForm() {
   const [email, setEmail] = useState("student@test.com");
   const [password, setPassword] = useState(DEMO_SEED_PASSWORD);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
   /** Extra demo users (e.g. mock @hit.ac.il) when listUsers succeeds; seeded @test.com rows always come from SEEDED_DEMO_ACCOUNTS. */
   const [extraDemos, setExtraDemos] = useState<User[]>([]);
 
@@ -50,6 +51,7 @@ function LoginForm() {
           onSubmit={async (e) => {
             e.preventDefault();
             setError(null);
+            setInfo(null);
             const u = await signIn(email, password);
             if (!u) setError(t("common.error"));
             else router.replace(next);
@@ -67,6 +69,7 @@ function LoginForm() {
             />
           </Field>
           {error ? <p style={{ color: "var(--color-danger)" }}>{error}</p> : null}
+          {info ? <p style={{ color: "var(--color-success)" }}>{info}</p> : null}
           <Button type="submit">{t("login.submit")}</Button>
         </form>
         <p style={{ marginTop: 16, color: "var(--color-muted)", fontSize: "0.9rem" }}>
@@ -74,6 +77,35 @@ function LoginForm() {
         </p>
         <div style={{ marginTop: 12 }}>
           <strong>{t("login.demoTitle")}</strong>
+          <p style={{ margin: "8px 0", color: "var(--color-muted)" }}>Password: {DEMO_SEED_PASSWORD}</p>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
+            {[
+              { label: "כניסה כסטודנט", email: "student@test.com" },
+              { label: "כניסה כמנחה", email: "supervisor@test.com" },
+              { label: "כניסה כאדמין", email: "admin@test.com" },
+              { label: "כניסה כבוחן", email: "examiner@test.com" },
+            ].map((item) => (
+              <Button
+                key={item.email}
+                variant="secondary"
+                size="sm"
+                onClick={async () => {
+                  setEmail(item.email);
+                  setPassword(DEMO_SEED_PASSWORD);
+                  setError(null);
+                  setInfo(null);
+                  const logged = await signIn(item.email, DEMO_SEED_PASSWORD);
+                  if (!logged) {
+                    setInfo("פרטי המשתמש מולאו. לחץ על כניסה להמשך.");
+                    return;
+                  }
+                  router.replace(next);
+                }}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </div>
           <ul style={{ paddingInlineStart: 20, marginTop: 8 }}>
             {SEEDED_DEMO_ACCOUNTS.map((u) => (
               <li key={u.email}>

@@ -309,6 +309,24 @@ function TemplateEditor({
           </Field>
         </div>
       ))}
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={() =>
+          setSteps([
+            ...steps,
+            {
+              key: `custom_step_${steps.length + 1}`,
+              titleHe: "אבן דרך חדשה",
+              titleEn: "New milestone",
+              defaultOffsetDays: 30,
+            },
+          ])
+        }
+      >
+        Add milestone
+      </Button>
+      <div style={{ height: 8 }} />
       <Button variant="primary" size="sm" onClick={() => void onSave({ ...tpl, steps })}>
         Save
       </Button>
@@ -324,11 +342,11 @@ function WeightsEditor({
   onSave: (next: GradingWeights) => Promise<void>;
 }) {
   const [weights, setWeights] = useState({ ...g.weights });
-  const sum = weightsSum(weights);
+  const sumPercent = Math.round(weightsSum(weights) * 100);
   return (
     <div style={{ marginBottom: 24 }}>
       <div style={{ fontWeight: 800, marginBottom: 8 }}>
-        {g.facultyId} / {g.degreeType} — sum: {sum.toFixed(2)}
+        {g.facultyId} / {g.degreeType} — total: {sumPercent}%
       </div>
       {Object.keys(weights).map((k) => (
         <Field key={k} label={k}>
@@ -340,6 +358,9 @@ function WeightsEditor({
           />
         </Field>
       ))}
+      <p style={{ marginTop: 8, color: sumPercent === 100 ? "var(--color-success)" : "var(--color-warning)" }}>
+        {sumPercent === 100 ? "סה\"כ תקין: 100%" : `נדרש עדכון ל-100% (כעת: ${sumPercent}%)`}
+      </p>
       <Button variant="primary" size="sm" onClick={() => void onSave({ ...g, weights })}>
         Save
       </Button>
