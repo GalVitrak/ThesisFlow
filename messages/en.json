@@ -45,7 +45,7 @@
     "password": "Password",
     "submit": "Sign in",
     "hint": "Mock mode (no Firebase): any password works. Click a name below to fill the email.",
-    "hintFirebase": "Firebase: after seeding, password for all demo accounts below is DemoPass123!. Click a name to fill email and password.",
+    "hintFirebase": "Click a name to fill email and password.",
     "demoTitle": "Demo accounts"
   },
   "dashboard": {
