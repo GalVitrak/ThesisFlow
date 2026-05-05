@@ -139,5 +139,15 @@
     "scheduled": "Scheduled",
     "cancelled": "Cancelled",
     "active": "Active"
+  },
+  "demoGuide": {
+    "title": "What should you check in the demo?",
+    "step1": "Sign in as a student and view an active project",
+    "step2": "Submit an application to an open project",
+    "step3": "Sign in as a supervisor and approve an application",
+    "step4": "Track milestones and submissions",
+    "step5": "Sign in as admin and configure grading weights",
+    "gotoLogin": "Go to login",
+    "gotoProposals": "Go to proposals"
   }
 }
