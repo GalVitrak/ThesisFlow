@@ -51,6 +51,11 @@
   "dashboard": {
     "title": "לוח בקרה",
     "welcome": "שלום",
+    "pendingSubmissions": "הגשות ממתינות",
+    "upcomingDefenses": "הגנות קרובות",
+    "assignedDefenses": "הגנות משויכות",
+    "submittedReviews": "סקירות שהוגשו",
+    "pendingGradingForms": "טפסי ציון ממתינים",
     "stats": {
       "openProposals": "הצעות פתוחות",
       "myApplications": "המועמדויות שלי",

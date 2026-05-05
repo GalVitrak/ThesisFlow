@@ -51,6 +51,11 @@
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Hello",
+    "pendingSubmissions": "Pending submissions",
+    "upcomingDefenses": "Upcoming defenses",
+    "assignedDefenses": "Assigned defenses",
+    "submittedReviews": "Submitted reviews",
+    "pendingGradingForms": "Pending grading forms",
     "stats": {
       "openProposals": "Open proposals",
       "myApplications": "My applications",
