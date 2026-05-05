@@ -17,9 +17,22 @@ const KEYS = new Set([
   "active",
 ]);
 
+const DISPLAY_MAP: Record<string, string> = {
+  "פתוח להגשה": "open",
+  מלא: "closed",
+  ממתין: "pending",
+  אושר: "approved",
+  נדחה: "rejected",
+  "נדרש תיקון": "needs_changes",
+  "טרם נפתח": "pending",
+  "טרם נקבע": "scheduled",
+  הושלם: "approved",
+};
+
 export function StatusBadge({ value }: { value: string }) {
   const t = useT();
-  const key = KEYS.has(value) ? value : "pending";
+  const normalized = DISPLAY_MAP[value] ?? value;
+  const key = KEYS.has(normalized) ? normalized : "pending";
   const tone =
     key === "approved"
       ? "success"

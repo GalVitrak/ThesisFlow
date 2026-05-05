@@ -1,15 +1,22 @@
 "use client";
 
 import type { Milestone } from "@/lib/types";
+import { Button } from "@/components/ui/Button";
 import { StatusBadge } from "./StatusBadge";
 import styles from "./MilestoneTimeline.module.css";
 
 export function MilestoneTimeline({
   milestones,
   locale,
+  currentOrder,
+  actionLabel,
+  onAction,
 }: {
   milestones: Milestone[];
   locale: string;
+  currentOrder?: number;
+  actionLabel?: string;
+  onAction?: (milestone: Milestone) => void;
 }) {
   return (
     <ol className={styles.track}>
@@ -22,8 +29,11 @@ export function MilestoneTimeline({
               : m.status === "rejected"
                 ? styles.dotDanger
                 : "";
+        const isCurrent = currentOrder ? m.order === currentOrder : m.status === "pending";
+        const isFuture = currentOrder ? m.order > currentOrder : false;
+        const itemClass = `${styles.step} ${isCurrent ? styles.stepCurrent : ""} ${isFuture ? styles.stepFuture : ""}`.trim();
         return (
-          <li key={m.id} className={styles.step}>
+          <li key={m.id} className={itemClass}>
             <div className={styles.rail}>
               <span className={`${styles.dot} ${extra}`.trim()} aria-hidden />
               {i < milestones.length - 1 ? <span className={styles.line} /> : null}
@@ -36,6 +46,13 @@ export function MilestoneTimeline({
                 {new Date(m.dueDate).toLocaleDateString(locale === "he" ? "he-IL" : "en-US")} ·{" "}
                 <StatusBadge value={m.status} />
               </p>
+              {isCurrent && actionLabel && onAction ? (
+                <div className={styles.actionRow}>
+                  <Button variant="secondary" size="sm" type="button" onClick={() => onAction(m)}>
+                    {actionLabel}
+                  </Button>
+                </div>
+              ) : null}
             </div>
           </li>
         );
