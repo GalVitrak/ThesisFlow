@@ -36,21 +36,31 @@ function Inner() {
     <AppShell title={`${t("dashboard.welcome")}, ${user.displayName}`} role={user.role}>
       <p className={styles.subtitle}>{t("admin.title")}</p>
       <div className={styles.metrics}>
-        <Card title={t("admin.faculties")}>
-          <div className={styles.metricValue}>{m.facultiesCount}</div>
-        </Card>
-        <Card title="Open proposals">
-          <div className={styles.metricValue}>{openProposalsCount}</div>
-        </Card>
-        <Card title="Pending submissions">
-          <div className={styles.metricValue}>{pendingSubmissionsCount}</div>
-        </Card>
-        <Card title={t("dashboard.stats.activeProjects")}>
-          <div className={styles.metricValue}>{m.activeProjectsCount}</div>
-        </Card>
-        <Card title="Upcoming defenses">
-          <div className={styles.metricValue}>{m.defensesScheduled}</div>
-        </Card>
+        <div className={styles.metricCard}>
+          <Card title={t("admin.faculties")}>
+            <div className={styles.metricValue}>{m.facultiesCount}</div>
+          </Card>
+        </div>
+        <div className={styles.metricCard}>
+          <Card title={t("dashboard.stats.openProposals")}>
+            <div className={styles.metricValue}>{openProposalsCount}</div>
+          </Card>
+        </div>
+        <div className={styles.metricCard}>
+          <Card title={t("dashboard.pendingSubmissions")}>
+            <div className={styles.metricValue}>{pendingSubmissionsCount}</div>
+          </Card>
+        </div>
+        <div className={styles.metricCard}>
+          <Card title={t("dashboard.stats.activeProjects")}>
+            <div className={styles.metricValue}>{m.activeProjectsCount}</div>
+          </Card>
+        </div>
+        <div className={styles.metricCard}>
+          <Card title={t("dashboard.upcomingDefenses")}>
+            <div className={styles.metricValue}>{m.defensesScheduled}</div>
+          </Card>
+        </div>
       </div>
 
       <Card title="פעולה מרכזית">

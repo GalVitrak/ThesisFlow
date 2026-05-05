@@ -37,23 +37,29 @@ function Inner() {
     <AppShell title={`${t("dashboard.welcome")}, ${user.displayName}`} role={user.role}>
       <div className={styles.metrics}>
         <Link href={`/${locale}/reviews`} className={styles.metricLink}>
-          <Card title={t("dashboard.stats.pendingReviews")}>
-            <div className={styles.metricValue}>{m.pendingReviewsCount}</div>
-          </Card>
+          <div className={styles.metricCard}>
+            <Card title={t("dashboard.stats.pendingReviews")}>
+              <div className={styles.metricValue}>{m.pendingReviewsCount}</div>
+            </Card>
+          </div>
         </Link>
         <Link href={`/${locale}/defense`} className={styles.metricLink}>
-          <Card title="Assigned defenses">
-            <div className={styles.metricValue}>{scheduledDefenses.length}</div>
-          </Card>
+          <div className={styles.metricCard}>
+            <Card title={t("dashboard.assignedDefenses")}>
+              <div className={styles.metricValue}>{scheduledDefenses.length}</div>
+            </Card>
+          </div>
         </Link>
         <Link href={`/${locale}/reviews`} className={styles.metricLink}>
-          <Card title="Submitted reviews">
-            <div className={styles.metricValue}>{submittedReviewsCount}</div>
-          </Card>
+          <div className={styles.metricCard}>
+            <Card title={t("dashboard.submittedReviews")}>
+              <div className={styles.metricValue}>{submittedReviewsCount}</div>
+            </Card>
+          </div>
         </Link>
       </div>
 
-      <Card title="Assigned defenses">
+      <Card title={t("dashboard.assignedDefenses")}>
         {m.assignedDefenses.length === 0 ? (
           <p className={styles.emptyText}>{t("common.empty")}</p>
         ) : (
@@ -74,7 +80,7 @@ function Inner() {
       </Card>
 
       <div className={styles.spacer} />
-      <Card title="Pending grading forms">
+      <Card title={t("dashboard.pendingGradingForms")}>
         {m.pendingReviewsCount === 0 ? (
           <p className={styles.emptyText}>אין טפסים ממתינים כרגע.</p>
         ) : (

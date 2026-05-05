@@ -13,6 +13,24 @@
 .metricValue {
   font-size: 2rem;
   font-weight: 800;
+  margin-top: auto;
+}
+
+.metricCard {
+  height: 100%;
+}
+
+.metricCard :global(section) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 104px;
+}
+
+.metricCard :global(h2) {
+  margin-bottom: var(--space-2);
+  min-height: 2.5rem;
+  line-height: 1.2;
 }
 
 .spacer {
