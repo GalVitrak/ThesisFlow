@@ -9,9 +9,11 @@ import { useI18n } from "@/components/i18n/I18nProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Card } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/domain/StatusBadge";
+import { DemoGuide } from "@/components/domain/DemoGuide";
 import { listNotificationsForUser } from "@/lib/services/notificationService";
 import { loadExaminerMetrics } from "@/lib/dashboard/metrics";
 import type { Notification } from "@/lib/types";
+import styles from "./examiner-dashboard.module.css";
 
 function Inner() {
   const { t, locale } = useI18n();
@@ -28,37 +30,39 @@ function Inner() {
   }, [user]);
 
   if (!user || !m) return null;
+  const scheduledDefenses = m.assignedDefenses.filter((d) => d.status === "scheduled");
+  const submittedReviewsCount = m.assignedDefenses.filter((d) => d.status !== "scheduled").length;
 
   return (
     <AppShell title={`${t("dashboard.welcome")}, ${user.displayName}`} role={user.role}>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "var(--space-4)",
-          marginBottom: "var(--space-5)",
-        }}
-      >
-        <Link href={`/${locale}/reviews`} style={{ textDecoration: "none", color: "inherit" }}>
+      <div className={styles.metrics}>
+        <Link href={`/${locale}/reviews`} className={styles.metricLink}>
           <Card title={t("dashboard.stats.pendingReviews")}>
-            <div style={{ fontSize: "2rem", fontWeight: 800 }}>{m.pendingReviewsCount}</div>
+            <div className={styles.metricValue}>{m.pendingReviewsCount}</div>
           </Card>
         </Link>
-        <Link href={`/${locale}/defense`} style={{ textDecoration: "none", color: "inherit" }}>
-          <Card title={t("dashboard.stats.defenses")}>
-            <div style={{ fontSize: "2rem", fontWeight: 800 }}>{m.assignedDefenses.length}</div>
+        <Link href={`/${locale}/defense`} className={styles.metricLink}>
+          <Card title="Assigned defenses">
+            <div className={styles.metricValue}>{scheduledDefenses.length}</div>
+          </Card>
+        </Link>
+        <Link href={`/${locale}/reviews`} className={styles.metricLink}>
+          <Card title="Submitted reviews">
+            <div className={styles.metricValue}>{submittedReviewsCount}</div>
           </Card>
         </Link>
       </div>
 
-      <Card title={t("defense.title")}>
+      <Card title="Assigned defenses">
         {m.assignedDefenses.length === 0 ? (
-          <p style={{ color: "var(--color-muted)" }}>{t("common.empty")}</p>
+          <p className={styles.emptyText}>{t("common.empty")}</p>
         ) : (
-          <ul style={{ margin: 0, paddingInlineStart: 20 }}>
+          <ul className={styles.list}>
             {m.assignedDefenses.map((d) => (
-              <li key={d.id} style={{ marginBottom: 8 }}>
-                <Link href={`/${locale}/projects/${d.projectId}`}>{d.projectId}</Link>
+              <li key={d.id}>
+                <Link href={`/${locale}/projects/${d.projectId}`} className={styles.inlineLink}>
+                  {d.projectId}
+                </Link>
                 {" — "}
                 <StatusBadge value={d.status} />
                 {" — "}
@@ -69,20 +73,32 @@ function Inner() {
         )}
       </Card>
 
-      <div style={{ height: 16 }} />
+      <div className={styles.spacer} />
+      <Card title="Pending grading forms">
+        {m.pendingReviewsCount === 0 ? (
+          <p className={styles.emptyText}>אין טפסים ממתינים כרגע.</p>
+        ) : (
+          <p className={styles.emptyText}>קיימים {m.pendingReviewsCount} טפסים שממתינים למילוי.</p>
+        )}
+      </Card>
+
+      <div className={styles.spacer} />
       <Card title={t("dashboard.notifications")}>
         {notifs.length === 0 ? (
-          <p style={{ color: "var(--color-muted)" }}>{t("common.empty")}</p>
+          <p className={styles.emptyText}>{t("common.empty")}</p>
         ) : (
-          <ul style={{ margin: 0, paddingInlineStart: 20 }}>
+          <ul className={styles.list}>
             {notifs.slice(0, 5).map((n) => (
-              <li key={n.id} style={{ marginBottom: 8 }}>
+              <li key={n.id}>
                 <strong>{n.title}</strong> — {n.body}
               </li>
             ))}
           </ul>
         )}
       </Card>
+
+      <div className={styles.spacer} />
+      <DemoGuide locale={locale} />
     </AppShell>
   );
 }

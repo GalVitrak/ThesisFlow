@@ -8,9 +8,11 @@ import { RequireRole } from "@/components/auth/RequireRole";
 import { useI18n } from "@/components/i18n/I18nProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Card } from "@/components/ui/Card";
+import { DemoGuide } from "@/components/domain/DemoGuide";
 import { listNotificationsForUser } from "@/lib/services/notificationService";
 import { loadAdminMetrics } from "@/lib/dashboard/metrics";
 import type { Notification } from "@/lib/types";
+import styles from "./admin-dashboard.module.css";
 
 function Inner() {
   const { t, locale } = useI18n();
@@ -27,66 +29,82 @@ function Inner() {
   }, [user]);
 
   if (!user || !m) return null;
+  const openProposalsCount = m.proposalsCount;
+  const pendingSubmissionsCount = m.applicationsCount;
 
   return (
     <AppShell title={`${t("dashboard.welcome")}, ${user.displayName}`} role={user.role}>
-      <p style={{ color: "var(--color-muted)", marginTop: 0 }}>{t("admin.title")}</p>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-          gap: "var(--space-4)",
-          marginBottom: "var(--space-5)",
-        }}
-      >
+      <p className={styles.subtitle}>{t("admin.title")}</p>
+      <div className={styles.metrics}>
         <Card title={t("admin.faculties")}>
-          <div style={{ fontSize: "2rem", fontWeight: 800 }}>{m.facultiesCount}</div>
+          <div className={styles.metricValue}>{m.facultiesCount}</div>
         </Card>
-        <Card title={t("proposals.title")}>
-          <div style={{ fontSize: "2rem", fontWeight: 800 }}>{m.proposalsCount}</div>
+        <Card title="Open proposals">
+          <div className={styles.metricValue}>{openProposalsCount}</div>
         </Card>
-        <Card title={t("apply.title")}>
-          <div style={{ fontSize: "2rem", fontWeight: 800 }}>{m.applicationsCount}</div>
+        <Card title="Pending submissions">
+          <div className={styles.metricValue}>{pendingSubmissionsCount}</div>
         </Card>
         <Card title={t("dashboard.stats.activeProjects")}>
-          <div style={{ fontSize: "2rem", fontWeight: 800 }}>{m.activeProjectsCount}</div>
+          <div className={styles.metricValue}>{m.activeProjectsCount}</div>
         </Card>
-        <Card title={t("dashboard.stats.defenses")}>
-          <div style={{ fontSize: "2rem", fontWeight: 800 }}>{m.defensesScheduled}</div>
+        <Card title="Upcoming defenses">
+          <div className={styles.metricValue}>{m.defensesScheduled}</div>
         </Card>
       </div>
 
+      <Card title="פעולה מרכזית">
+        <div className={styles.ctaRow}>
+          <p className={styles.ctaText}>הגדר אבני דרך לפקולטה</p>
+          <Link href={`/${locale}/admin`} className={styles.primaryLink}>
+            מעבר לניהול
+          </Link>
+        </div>
+      </Card>
+
+      <div className={styles.spacer} />
       <Card title={t("common.actions")}>
-        <ul style={{ margin: 0, paddingInlineStart: 20 }}>
-          <li style={{ marginBottom: 8 }}>
-            <Link href={`/${locale}/admin`}>{t("admin.title")}</Link>
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            <Link href={`/${locale}/proposals`}>{t("nav.proposals")}</Link>
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            <Link href={`/${locale}/reviews`}>{t("nav.reviews")}</Link>
+        <ul className={styles.list}>
+          <li>
+            <Link href={`/${locale}/admin`} className={styles.inlineLink}>
+              {t("admin.title")}
+            </Link>
           </li>
           <li>
-            <Link href={`/${locale}/defense`}>{t("nav.defense")}</Link>
+            <Link href={`/${locale}/proposals`} className={styles.inlineLink}>
+              {t("nav.proposals")}
+            </Link>
+          </li>
+          <li>
+            <Link href={`/${locale}/reviews`} className={styles.inlineLink}>
+              {t("nav.reviews")}
+            </Link>
+          </li>
+          <li>
+            <Link href={`/${locale}/defense`} className={styles.inlineLink}>
+              {t("nav.defense")}
+            </Link>
           </li>
         </ul>
       </Card>
 
-      <div style={{ height: 16 }} />
+      <div className={styles.spacer} />
       <Card title={t("dashboard.notifications")}>
         {notifs.length === 0 ? (
-          <p style={{ color: "var(--color-muted)" }}>{t("common.empty")}</p>
+          <p className={styles.emptyText}>{t("common.empty")}</p>
         ) : (
-          <ul style={{ margin: 0, paddingInlineStart: 20 }}>
+          <ul className={styles.list}>
             {notifs.slice(0, 5).map((n) => (
-              <li key={n.id} style={{ marginBottom: 8 }}>
+              <li key={n.id}>
                 <strong>{n.title}</strong> — {n.body}
               </li>
             ))}
           </ul>
         )}
       </Card>
+
+      <div className={styles.spacer} />
+      <DemoGuide locale={locale} />
     </AppShell>
   );
 }
