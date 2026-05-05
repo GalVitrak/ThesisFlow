@@ -1,0 +1,6 @@
+{
+  "hosting": {
+    "public": "static-mvp",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}

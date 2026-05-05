@@ -1,0 +1,131 @@
+{
+  "app": {
+    "name": "ThesisFlow",
+    "tagline": "ניהול פרויקטי גמר ותזות"
+  },
+  "nav": {
+    "dashboard": "לוח בקרה",
+    "login": "כניסה",
+    "proposals": "הצעות פרויקט",
+    "submissions": "הגשות",
+    "reviews": "אישורים וסקירות",
+    "defense": "הגנות",
+    "admin": "הגדרות מנהל",
+    "logout": "יציאה"
+  },
+  "common": {
+    "loading": "טוען…",
+    "error": "אירעה שגיאה",
+    "save": "שמירה",
+    "cancel": "ביטול",
+    "back": "חזרה",
+    "search": "חיפוש",
+    "actions": "פעולות",
+    "empty": "אין נתונים להצגה",
+    "markRead": "סמן כנקרא",
+    "view": "צפייה",
+    "apply": "הגשת מועמדות",
+    "all": "הכל"
+  },
+  "login": {
+    "title": "כניסה למערכת",
+    "email": "דוא\"ל",
+    "password": "סיסמה",
+    "submit": "התחברות",
+    "hint": "במצב הדגמה (ללא Firebase): כל סיסמה תקפה. בחרו משתמש למטה למילוי הדוא\"ל.",
+    "hintFirebase": "Firebase: לאחר seed, סיסמה לכל חשבונות הדגמה למטה — DemoPass123!. לחיצה על שם ממלאת דוא\"ל וסיסמה.",
+    "demoTitle": "חשבונות הדגמה"
+  },
+  "dashboard": {
+    "title": "לוח בקרה",
+    "welcome": "שלום",
+    "stats": {
+      "openProposals": "הצעות פתוחות",
+      "myApplications": "המועמדויות שלי",
+      "pendingReviews": "סקירות ממתינות",
+      "activeProjects": "פרויקטים פעילים",
+      "defenses": "הגנות קרובות"
+    },
+    "notifications": "התראות אחרונות"
+  },
+  "proposals": {
+    "title": "הצעות פרויקט",
+    "faculty": "פקולטה",
+    "degree": "תואר",
+    "supervisor": "מנחה",
+    "status": "סטטוס",
+    "newProposal": "פרסום הצעה"
+  },
+  "proposalDetail": {
+    "summary": "תקציר",
+    "tags": "תגיות",
+    "capacity": "מקומות"
+  },
+  "apply": {
+    "title": "הגשת מועמדות",
+    "cv": "קישור לקורות חיים (דמו)",
+    "grades": "גיליון ציונים / תקציר",
+    "submit": "שליחה"
+  },
+  "project": {
+    "title": "פרויקט",
+    "student": "סטודנט",
+    "milestones": "אבני דרך",
+    "submissions": "הגשות"
+  },
+  "milestones": {
+    "title": "מעקב אבני דרך",
+    "due": "תאריך יעד",
+    "order": "שלב"
+  },
+  "submissions": {
+    "title": "הגשות",
+    "type": "סוג",
+    "submittedAt": "הוגש",
+    "file": "קובץ"
+  },
+  "reviews": {
+    "title": "סקירות והחלטות",
+    "decision": "החלטה",
+    "comment": "הערה",
+    "scores": "ציונים"
+  },
+  "defense": {
+    "title": "תיאום הגנות",
+    "schedule": "קביעת מועד",
+    "room": "חדר / קישור",
+    "datetime": "מועד",
+    "examiners": "בוחנים"
+  },
+  "admin": {
+    "title": "הגדרות מערכת",
+    "faculties": "פקולטות",
+    "templates": "תבניות אבני דרך",
+    "weights": "משקלי ציון",
+    "notifications": "חוקי התראות",
+    "emailLog": "יומן דוא\"ל (דמה)"
+  },
+  "degree": {
+    "bachelor": "תואר ראשון",
+    "master": "תואר שני"
+  },
+  "roles": {
+    "student": "סטודנט",
+    "supervisor": "מנחה",
+    "examiner": "בוחן",
+    "admin": "מנהל מערכת"
+  },
+  "status": {
+    "open": "פתוח",
+    "closed": "סגור",
+    "pending": "ממתין",
+    "approved": "אושר",
+    "rejected": "נדחה",
+    "needs_changes": "נדרשים שינויים",
+    "meeting_requested": "נדרשת פגישה",
+    "submitted": "הוגש",
+    "scheduled": "מתוכנן",
+    "cancelled": "בוטל",
+    "active": "פעיל"
+  }
+}

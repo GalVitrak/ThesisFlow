@@ -1,0 +1,194 @@
+rules_version = '2';
+
+// ThesisFlow — rules aligned with lib/services/firebase/* and app flows.
+//
+// IMPORTANT: /users is readable without sign-in because the login page lists demo
+// accounts (listUsers). For production, remove public read and load demo emails
+// client-side only, or after partial auth.
+//
+// Reads on most collections are allowed for any signed-in user so existing
+// unfiltered listQueries (e.g. listActiveProjects + client-side filter) keep working.
+// Data still leaks across roles at read level; tighten later with filtered queries.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userRef() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+
+    function userData() {
+      return get(userRef()).data;
+    }
+
+    function role() {
+      return userData().role;
+    }
+
+    function isAdmin() {
+      return signedIn() && (role() == 'admin' || role() == 'coordinator');
+    }
+
+    function isSupervisor() {
+      return signedIn() && role() == 'supervisor';
+    }
+
+    function isStudent() {
+      return signedIn() && role() == 'student';
+    }
+
+    function isExaminer() {
+      return signedIn() && role() == 'examiner';
+    }
+
+    function activeProject(projectId) {
+      return get(/databases/$(database)/documents/activeProjects/$(projectId)).data;
+    }
+
+    function proposalSupervisor(proposalId) {
+      return get(/databases/$(database)/documents/projectProposals/$(proposalId)).data.supervisorId;
+    }
+
+    function canReviewProject(p) {
+      return p.supervisorId == request.auth.uid
+        || (p.examinerIds is list && request.auth.uid in p.examinerIds);
+    }
+
+    function submissionProjectData(submissionId) {
+      let sub = get(/databases/$(database)/documents/submissions/$(submissionId)).data;
+      return activeProject(sub.projectId);
+    }
+
+    // --- Users (Auth uid == document id) ---
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /faculties/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /milestoneTemplates/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /gradingWeights/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /settings/{docId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /projectProposals/{id} {
+      allow read: if signedIn();
+      // Admin may publish on behalf of a supervisor (see proposals page).
+      allow create: if signedIn() && (
+        isAdmin()
+        || (isSupervisor() && request.resource.data.supervisorId == request.auth.uid)
+      );
+      allow update: if signedIn() && (
+        isAdmin()
+        || resource.data.supervisorId == request.auth.uid
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /applications/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && isStudent()
+        && request.resource.data.studentId == request.auth.uid;
+      allow update: if signedIn() && (
+        isAdmin()
+        || (isSupervisor() && proposalSupervisor(resource.data.proposalId) == request.auth.uid)
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /activeProjects/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && (
+        isAdmin()
+        || (isSupervisor() && request.resource.data.supervisorId == request.auth.uid)
+      );
+      allow update: if signedIn() && (
+        isAdmin()
+        || resource.data.supervisorId == request.auth.uid
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /milestones/{id} {
+      allow read: if signedIn();
+      // Spawned after approval; may run as admin approving on behalf of the supervisor.
+      allow create: if signedIn() && (
+        isAdmin()
+        || activeProject(request.resource.data.projectId).supervisorId == request.auth.uid
+      );
+      allow update: if signedIn() && (
+        isAdmin()
+        || activeProject(resource.data.projectId).studentId == request.auth.uid
+        || canReviewProject(activeProject(resource.data.projectId))
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /submissions/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && isStudent()
+        && activeProject(request.resource.data.projectId).studentId == request.auth.uid;
+      allow update: if signedIn() && (
+        isAdmin()
+        || canReviewProject(activeProject(resource.data.projectId))
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /reviews/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.reviewerId == request.auth.uid
+        && (
+          isAdmin()
+          || canReviewProject(submissionProjectData(request.resource.data.submissionId))
+        );
+      allow update, delete: if isAdmin();
+    }
+
+    match /defenseExams/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    match /notifications/{id} {
+      allow read: if signedIn() && (
+        isAdmin()
+        || resource.data.userId == request.auth.uid
+      );
+      allow create: if signedIn();
+      allow update: if signedIn() && (
+        isAdmin()
+        || resource.data.userId == request.auth.uid
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /emailLog/{id} {
+      allow read: if isAdmin();
+      allow create: if signedIn();
+      allow update, delete: if isAdmin();
+    }
+  }
+}

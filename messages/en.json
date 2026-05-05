@@ -1,0 +1,131 @@
+{
+  "app": {
+    "name": "ThesisFlow",
+    "tagline": "Final projects and thesis management"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "proposals": "Project proposals",
+    "submissions": "Submissions",
+    "reviews": "Reviews & approvals",
+    "defense": "Defense exams",
+    "admin": "Admin settings",
+    "logout": "Log out"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "search": "Search",
+    "actions": "Actions",
+    "empty": "Nothing to show yet",
+    "markRead": "Mark as read",
+    "view": "View",
+    "apply": "Apply",
+    "all": "All"
+  },
+  "login": {
+    "title": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "hint": "Mock mode (no Firebase): any password works. Click a name below to fill the email.",
+    "hintFirebase": "Firebase: after seeding, password for all demo accounts below is DemoPass123!. Click a name to fill email and password.",
+    "demoTitle": "Demo accounts"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Hello",
+    "stats": {
+      "openProposals": "Open proposals",
+      "myApplications": "My applications",
+      "pendingReviews": "Pending reviews",
+      "activeProjects": "Active projects",
+      "defenses": "Upcoming defenses"
+    },
+    "notifications": "Recent notifications"
+  },
+  "proposals": {
+    "title": "Project proposals",
+    "faculty": "Faculty",
+    "degree": "Degree",
+    "supervisor": "Supervisor",
+    "status": "Status",
+    "newProposal": "Publish proposal"
+  },
+  "proposalDetail": {
+    "summary": "Summary",
+    "tags": "Tags",
+    "capacity": "Capacity"
+  },
+  "apply": {
+    "title": "Application",
+    "cv": "CV link (demo)",
+    "grades": "Grades summary",
+    "submit": "Submit"
+  },
+  "project": {
+    "title": "Project",
+    "student": "Student",
+    "milestones": "Milestones",
+    "submissions": "Submissions"
+  },
+  "milestones": {
+    "title": "Milestone tracker",
+    "due": "Due date",
+    "order": "Step"
+  },
+  "submissions": {
+    "title": "Submissions",
+    "type": "Type",
+    "submittedAt": "Submitted",
+    "file": "File"
+  },
+  "reviews": {
+    "title": "Reviews & decisions",
+    "decision": "Decision",
+    "comment": "Comment",
+    "scores": "Scores"
+  },
+  "defense": {
+    "title": "Defense scheduling",
+    "schedule": "Schedule",
+    "room": "Room / link",
+    "datetime": "Date & time",
+    "examiners": "Examiners"
+  },
+  "admin": {
+    "title": "System settings",
+    "faculties": "Faculties",
+    "templates": "Milestone templates",
+    "weights": "Grading weights",
+    "notifications": "Notification rules",
+    "emailLog": "Email log (mock)"
+  },
+  "degree": {
+    "bachelor": "Bachelor",
+    "master": "Master"
+  },
+  "roles": {
+    "student": "Student",
+    "supervisor": "Supervisor",
+    "examiner": "Examiner",
+    "admin": "Admin"
+  },
+  "status": {
+    "open": "Open",
+    "closed": "Closed",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "needs_changes": "Needs changes",
+    "meeting_requested": "Meeting requested",
+    "submitted": "Submitted",
+    "scheduled": "Scheduled",
+    "cancelled": "Cancelled",
+    "active": "Active"
+  }
+}
