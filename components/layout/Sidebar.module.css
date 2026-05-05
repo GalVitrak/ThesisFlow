@@ -51,6 +51,17 @@
   transition: background 0.15s ease;
 }
 
+.linkInner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.linkIcon {
+  width: 1.1rem;
+  text-align: center;
+}
+
 .link:hover {
   background: rgb(255 255 255 / 0.1);
   text-decoration: none;

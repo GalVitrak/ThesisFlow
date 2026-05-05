@@ -1,102 +1,108 @@
-# ThesisFlow (MVP)
+# ThesisFlow – Academic Project & Thesis Management System
 
-מערכת הדגמה לניהול פרויקטי גמר ותזות — **עברית כברירת מחדל** + מתג **EN**. לוחות בקרה נפרדים לפי תפקיד.
+Live demo: `TBD`
 
-## Tech
+ThesisFlow is a workflow-driven MVP for managing academic final projects and theses in Hebrew (RTL-first) with English support.
+
+## Tech Stack
 
 - Next.js 15 (App Router), React 19, TypeScript
-- CSS Modules + `app/globals.css` (ללא Tailwind)
-- Firebase Auth + Firestore (אופציונלי) — שכבת שירותים עם מצב **mock** ללא מפתחות
-- תפקידים: `student` | `supervisor` | `examiner` | `admin`
+- CSS Modules + `app/globals.css`
+- Firebase Auth + Firestore (optional), with a full mock fallback mode
+- Role-based UX: `student`, `supervisor`, `admin`, `examiner`
 
-## הרצה מקומית
+## Main Features
+
+- Role dashboards with actionable cards and status visibility
+- Proposal management + student application flow
+- Supervisor review actions (approve/reject/request meeting)
+- Milestone timeline and submission tracking
+- Notifications + defense scheduling overview
+- Admin configuration for faculties, milestones, and grading weights
+- Demo guide and one-click role login shortcuts
+
+## Demo Users
+
+- Student: `student@test.com`
+- Supervisor: `supervisor@test.com`
+- Admin: `admin@test.com`
+- Examiner: `examiner@test.com`
+- Password (all users): `DemoPass123!`
+
+## Local Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-פתיחת `http://localhost:3000` מפנה ל־`/he/...`. אחרי התחברות: `/he/dashboard` מפנה ל־`/he/dashboard/student` (או supervisor / examiner / admin).
+Open `http://localhost:3000` (defaults to `/he/...`).
 
-**Windows / Turbopack:** אם `next dev --turbopack` נכשל עם שגיאות מסוג `_buildManifest` / `ENOENT` בתיקיית `.next`, עצרו את כל שרתי הפיתוח, הריצו `npm run clean`, והפעילו שוב `npm run dev`. אם הבעיה חוזרת, השתמשו ב־`npm run dev:webpack` (ללא Turbopack).
+### Windows / Turbopack fallback
 
-**ניקוי cache של Next:** `npm run clean` מריץ `scripts/clean-next.mjs` ומוחק את `.next` (מתאים אחרי עדכוני Next או כשהבילד נתקע).
+If `next dev --turbopack` fails with `_buildManifest` / `ENOENT`:
 
-**מיתוג HIT:** לוגו לתפריט הצד נמצא ב־`public/branding/hit-logo-50.jpg` (רכיב `HitLogo`).
+```bash
+npm run clean
+npm run dev
+```
 
-## חשבונות הדגמה (mock)
+If still unstable:
 
-כל סיסמה תקפה במצב mock:
+```bash
+npm run dev:webpack
+```
 
-| תפקיד   | דוא"ל |
-|--------|--------|
-| מנהל   | admin@test.com |
-| מנחה   | supervisor@test.com |
-| בוחן   | examiner@test.com |
-| סטודנט | student@test.com |
+`npm run clean` runs `scripts/clean-next.mjs` and removes `.next`.
 
-(קיימים גם משתמשים נוספים עם כתובות `@hit.ac.il` ב־mock seed.)
+Branding asset used in the sidebar: `public/branding/hit-logo-50.jpg`.
 
-## מבנה עיקרי
+## Main User Flows (Demo Script)
 
-- `app/[locale]/dashboard/` — פניית `/dashboard` + לוחות: `student`, `supervisor`, `examiner`, `admin`
-- `lib/services/` — `authService`, `userService`, `projectService`, `applicationService`, `milestoneService`, `reviewService`, `notificationService`, `adminSettingsService`
-- `lib/services/firebase/` — מימוש Firestore + `notificationHelper.firebase.ts`
-- `lib/mock/` — נתוני דמו וזיכרון מקומי
-- `scripts/seed-firestore.mjs` — זריעת Auth + Firestore (אופציונלי)
+1. Sign in as student and review active project timeline
+2. Apply to an open proposal from the proposals page
+3. Sign in as supervisor and review pending applications
+4. Track milestones/submissions and update review statuses
+5. Sign in as admin and adjust grading weights to total 100%
 
-## Firebase (ייצור / דמו מול ענן)
+## Firebase Setup and Deployment
 
-**מה חייב לקרות בקונסול (אי־אפשר לבצע בשבילכם מרחוק):** יצירת פרויקט ב־Google, הפעלת שירותים, והעתקת מפתחות — דורש התחברות לחשבון Google שלכם.
+1. Create a Firebase project and enable Auth (Email/Password) + Firestore
+2. Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_FIREBASE_*`
+3. Set `NEXT_PUBLIC_USE_FIREBASE=true`
+4. Ensure Firestore `users/{uid}` docs use Auth UID as the document ID
+5. Deploy rules:
 
-**מה כבר מוכן בריפו:** `firestore.rules`, `firebase.json`, `apphosting.yaml` (תבנית ל־App Hosting), `.firebaserc.example`, וסקריפטים ב־`package.json` (`firebase:deploy:rules`, וכו.) אחרי `npm install`.
+```bash
+npm run firebase:login
+npm run firebase:use
+npm run firebase:deploy:rules
+```
 
-1. [Firebase Console](https://console.firebase.google.com/) → צרו פרויקט והפעילו **Authentication** (Email/Password) ו־**Firestore**.
-2. העתיקו `.env.example` ל־`.env.local` ומלאו `NEXT_PUBLIC_FIREBASE_*` מהגדרות אפליקציית ה־Web.
-3. `NEXT_PUBLIC_USE_FIREBASE=true`
-4. ב־Firestore: מסמכי `users` חייבים להשתמש ב־**אותו id כמו `uid` מ־Auth**, עם שדות `email`, `displayName`, `role` (`student` | `supervisor` | `examiner` | `admin`), ואופציונלי `facultyId`. (`npm run seed:firestore` עושה זאת.)
-5. פרסמו כללי אבטחה: הקובץ [`firestore.rules`](firestore.rules) — `npm run firebase:login` (פעם אחת), העתיקו `.firebaserc.example` ל־`.firebaserc` והחליפו ב־Project ID, ואז `npm run firebase:deploy:rules`.
-
-**אוספים (Firestore):** `users`, `faculties`, `projectProposals`, `applications`, `activeProjects`, `milestones`, `submissions`, `reviews`, `defenseExams`, `gradingWeights`, `notifications`, וכן `milestoneTemplates`, `settings` (מסמך `global`), `emailLog`.
-
-### זריעה (Auth + דוגמאות)
-
-דורש **מפתח שירות** (JSON) עם הרשאות מתאימות:
+### Seed Firebase demo dataset
 
 ```powershell
 $env:GOOGLE_APPLICATION_CREDENTIALS="C:\path\to\serviceAccount.json"
 npm run seed:firestore
 ```
 
-סיסמת ברירת מחדל למשתמשי הדמו: `DemoPass123!` (ניתן לשנות עם `SEED_USER_PASSWORD`).
+Optional:
 
-לאחר הזריעה התחברו עם `student@test.com` / `supervisor@test.com` / וכו.
+- `SEED_USER_PASSWORD` overrides default demo password
 
-**אינדקסים:** אם Firestore מבקש אינדקס מורכב (למשל שאילתות עם מספר `where`), הוסיפו לפי הקישור בקונסול.
+### Deploy options
 
-## פריסה
+- Vercel: standard Next.js SSR deployment
+- Firebase App Hosting (recommended for this repo): configure GitHub + env vars in Firebase console
+- Firebase Hosting static export requires additional export setup in Next config
 
-### Vercel (מומלץ ל־Next.js SSR)
+## Scripts
 
-1. חברו את הריפו ל־Vercel.
-2. הגדירו משתני סביבה (אותם `NEXT_PUBLIC_FIREBASE_*` ו־`NEXT_PUBLIC_USE_FIREBASE`).
-3. `npm run build` רץ ב־CI של Vercel; הנתיבים תחת `[locale]` נתמכים.
-
-### Firebase Hosting / App Hosting
-
-- **מומלץ לפרויקט הזה (Next.js 15 + `[locale]`):** [Firebase App Hosting](https://firebase.google.com/docs/app-hosting/get-started) — בקונסול: חיבור GitHub, בחירת ריפו/ענף, והגדרת משתני סביבה (`NEXT_PUBLIC_*` כמו ב־`.env.local`). אין צורך ב־`out`; Google מריץ `next build` בשבילכם. Blaze נדרש. ראו גם [`apphosting.yaml`](apphosting.yaml).
-- **Firebase Hosting קלאסי (`firebase deploy --only hosting`):** משרת תיקייה סטטית (`firebase.json` → `public: "out"`). כרגע **אין** `output: 'export'` ב־`next.config.ts` — הוספת export דורשת בין היתר `generateStaticParams()` לכל מסלול דינמי, ואז `npm run build` יוצר `out` ואפשר `npm run firebase:deploy:hosting`.
-
-קובץ [`firebase.json`](firebase.json) כולל גם `firestore.rules` לפריסת כללים.
-
-## סקריפטים
-
-- `npm run dev` — פיתוח (Turbopack)
-- `npm run dev:webpack` — פיתוח עם bundler הקלאסי של Next (אם Turbopack מפריע)
-- `npm run clean` — מחיקת `.next` לפני `dev` / `build` נקי
-- `npm run build` / `npm run start` — ייצור
-- `npm run lint` — ESLint
-- `npm run seed:firestore` — זריעת Firestore + Auth (דורש `firebase-admin` ומפתח שירות)
-- `npm run firebase:login` / `npm run firebase:use` — התחברות ובחירת פרויקט (Firebase CLI)
-- `npm run firebase:deploy:rules` — פריסת `firestore.rules`
-- `npm run firebase:deploy:hosting` — פריסת תיקיית `out` (אחרי build סטטי)
+- `npm run dev` – dev server with Turbopack
+- `npm run dev:webpack` – dev server without Turbopack
+- `npm run clean` – remove `.next` cache
+- `npm run lint` – ESLint
+- `npm run build` / `npm run start` – production build/run
+- `npm run seed:firestore` – seed Auth + Firestore demo data
+- `npm run firebase:deploy:rules` – deploy Firestore security rules
+- `npm run firebase:deploy:hosting` – deploy static hosting target (`out`)

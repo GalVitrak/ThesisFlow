@@ -10,6 +10,15 @@ import { Button } from "@/components/ui/Button";
 import type { UserRole } from "@/lib/types";
 import styles from "./Sidebar.module.css";
 
+const NAV_ICONS: Record<string, string> = {
+  "nav.dashboard": "🏠",
+  "nav.proposals": "📚",
+  "nav.submissions": "📤",
+  "nav.reviews": "📝",
+  "nav.defense": "🎓",
+  "nav.admin": "⚙️",
+};
+
 function NavLinks({
   role,
   onNavigate,
@@ -33,7 +42,12 @@ function NavLinks({
             className={`${styles.link} ${active ? styles.linkActive : ""}`}
             onClick={onNavigate}
           >
-            {t(item.labelKey)}
+            <span className={styles.linkInner}>
+              <span className={styles.linkIcon} aria-hidden>
+                {NAV_ICONS[item.labelKey] ?? "•"}
+              </span>
+              <span>{t(item.labelKey)}</span>
+            </span>
           </Link>
         );
       })}
