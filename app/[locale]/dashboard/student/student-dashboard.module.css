@@ -1,0 +1,74 @@
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.metricLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.metricValue {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.spacer {
+  height: 16px;
+}
+
+.taskRow {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.taskText {
+  margin: 0;
+  font-weight: 600;
+}
+
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+}
+
+.inlineLink {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.emptyText {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.projectBlock {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.projectRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.list {
+  margin: 0;
+  padding-inline-start: 20px;
+  display: grid;
+  gap: var(--space-2);
+}
