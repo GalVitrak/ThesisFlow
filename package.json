@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:webpack": "next dev",
+    "clean": "node scripts/clean-next.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

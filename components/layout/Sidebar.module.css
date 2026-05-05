@@ -1,27 +1,37 @@
 .aside {
   width: var(--sidebar-width);
   flex-shrink: 0;
-  background: var(--color-primary);
+  background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   color: var(--color-primary-contrast);
   display: flex;
   flex-direction: column;
   padding: var(--space-5) var(--space-4);
   gap: var(--space-5);
+  box-shadow: var(--shadow-sidebar);
+  z-index: 2;
+  transition:
+    width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.22s ease,
+    padding 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.brand {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+[dir="rtl"] .aside {
+  box-shadow: -4px 0 24px rgb(15 23 42 / 0.07);
 }
 
-.brand strong {
-  font-size: 1.1rem;
+.asideCollapsed {
+  width: 0 !important;
+  min-width: 0;
+  padding-inline: 0;
+  padding-block: var(--space-5);
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
 }
 
-.brand span {
-  font-size: 0.8rem;
-  opacity: 0.85;
+.asideHiddenMobile {
+  display: none;
 }
 
 .nav {
@@ -33,29 +43,136 @@
 .link {
   display: block;
   padding: var(--space-3) var(--space-3);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: inherit;
   text-decoration: none;
   font-weight: 600;
+  font-size: 0.9375rem;
+  transition: background 0.15s ease;
 }
 
 .link:hover {
-  background: rgb(255 255 255 / 0.08);
+  background: rgb(255 255 255 / 0.1);
   text-decoration: none;
 }
 
 .linkActive {
-  background: rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.18);
+  border-inline-start: 3px solid rgb(255 255 255 / 0.55);
 }
 
 .footer {
   margin-top: auto;
-  font-size: 0.8rem;
-  opacity: 0.8;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  opacity: 0.88;
 }
 
-@media (max-width: 900px) {
-  .aside {
-    display: none;
+.footerText {
+  margin: 0 0 var(--space-2);
+}
+
+.footerLink {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footerLink:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.footerMvp {
+  opacity: 0.75;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(15 23 42 / 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 45;
+  animation: backdropIn 0.2s ease;
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobileDrawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: min(20rem, 88vw);
+  max-width: 100%;
+  background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  color: var(--color-primary-contrast);
+  z-index: 46;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-shadow: 4px 0 32px rgb(0 0 0 / 0.2);
+  animation: drawerInLtr 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[dir="rtl"] .mobileDrawer {
+  box-shadow: -4px 0 32px rgb(0 0 0 / 0.2);
+  animation-name: drawerInRtl;
+}
+
+@keyframes drawerInLtr {
+  from {
+    transform: translateX(-100%);
+    opacity: 0.92;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes drawerInRtl {
+  from {
+    transform: translateX(100%);
+    opacity: 0.92;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.mobileDrawerHeader {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: var(--space-2);
+}
+
+.mobileDrawer .nav {
+  flex: 1;
+  overflow: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aside,
+  .link,
+  .backdrop,
+  .mobileDrawer {
+    animation: none;
+    transition: none;
+  }
+
+  .link:hover {
+    transform: none;
   }
 }

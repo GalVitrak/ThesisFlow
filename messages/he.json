@@ -1,17 +1,28 @@
 {
   "app": {
     "name": "ThesisFlow",
-    "tagline": "ניהול פרויקטי גמר ותזות"
+    "tagline": "ליווי נעים לפרויקט הגמר או התזה שלכם",
+    "partnerLine": "פותח בשיתוף המכון הטכנולוגי חולון (HIT)",
+    "footerNote": "מערכת הדגמה לסטודנטים ולסגל — אנחנו כאן לכל שלב בדרך.",
+    "hitWebsite": "לאתר HIT",
+    "mvpBadge": "MVP"
   },
   "nav": {
-    "dashboard": "לוח בקרה",
+    "openNavigation": "פתיחת תפריט ניווט",
+    "closeMenu": "סגירת תפריט",
+    "expandSidebar": "הרחבת תפריט צד",
+    "collapseSidebar": "כיווץ תפריט צד",
+    "navigationMenu": "ניווט ראשי",
+    "dashboard": "לוח אישי",
     "login": "כניסה",
     "proposals": "הצעות פרויקט",
     "submissions": "הגשות",
     "reviews": "אישורים וסקירות",
     "defense": "הגנות",
     "admin": "הגדרות מנהל",
-    "logout": "יציאה"
+    "logout": "יציאה",
+    "notifications": "התראות",
+    "unreadLabel": "שלא נקראו"
   },
   "common": {
     "loading": "טוען…",
@@ -28,6 +39,7 @@
     "all": "הכל"
   },
   "login": {
+    "welcomeSubtitle": "ברוכים הבאים. כאן תוכלו לעקוב אחרי ההצעות, ההגשות, הביקורות וההגנה — בצורה פשוטה וברורה.",
     "title": "כניסה למערכת",
     "email": "דוא\"ל",
     "password": "סיסמה",

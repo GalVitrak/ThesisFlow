@@ -1,10 +1,11 @@
 :root {
-  --color-bg: #f4f6f9;
+  --color-bg: #f0f4fa;
   --color-surface: #ffffff;
   --color-border: #e2e8f0;
   --color-text: #0f172a;
   --color-muted: #64748b;
-  --color-primary: #1e3a5f;
+  --color-primary: #1a365d;
+  --color-primary-deep: #152a45;
   --color-primary-contrast: #ffffff;
   --color-accent: #2563eb;
   --color-success: #15803d;
@@ -15,6 +16,7 @@
   --radius-lg: 14px;
   --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.06);
   --shadow-md: 0 8px 24px rgb(15 23 42 / 0.08);
+  --shadow-sidebar: 4px 0 24px rgb(15 23 42 / 0.07);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;

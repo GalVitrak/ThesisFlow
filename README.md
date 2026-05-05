@@ -18,6 +18,12 @@ npm run dev
 
 פתיחת `http://localhost:3000` מפנה ל־`/he/...`. אחרי התחברות: `/he/dashboard` מפנה ל־`/he/dashboard/student` (או supervisor / examiner / admin).
 
+**Windows / Turbopack:** אם `next dev --turbopack` נכשל עם שגיאות מסוג `_buildManifest` / `ENOENT` בתיקיית `.next`, עצרו את כל שרתי הפיתוח, הריצו `npm run clean`, והפעילו שוב `npm run dev`. אם הבעיה חוזרת, השתמשו ב־`npm run dev:webpack` (ללא Turbopack).
+
+**ניקוי cache של Next:** `npm run clean` מריץ `scripts/clean-next.mjs` ומוחק את `.next` (מתאים אחרי עדכוני Next או כשהבילד נתקע).
+
+**מיתוג HIT:** לוגו לתפריט הצד נמצא ב־`public/branding/hit-logo-50.jpg` (רכיב `HitLogo`).
+
 ## חשבונות הדגמה (mock)
 
 כל סיסמה תקפה במצב mock:
@@ -85,8 +91,11 @@ npm run seed:firestore
 
 ## סקריפטים
 
-- `npm run dev` — פיתוח
+- `npm run dev` — פיתוח (Turbopack)
+- `npm run dev:webpack` — פיתוח עם bundler הקלאסי של Next (אם Turbopack מפריע)
+- `npm run clean` — מחיקת `.next` לפני `dev` / `build` נקי
 - `npm run build` / `npm run start` — ייצור
+- `npm run lint` — ESLint
 - `npm run seed:firestore` — זריעת Firestore + Auth (דורש `firebase-admin` ומפתח שירות)
 - `npm run firebase:login` / `npm run firebase:use` — התחברות ובחירת פרויקט (Firebase CLI)
 - `npm run firebase:deploy:rules` — פריסת `firestore.rules`

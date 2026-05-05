@@ -1,6 +1,7 @@
 .shell {
   display: flex;
   min-height: 100vh;
+  background: var(--color-bg);
 }
 
 .main {
@@ -12,15 +13,23 @@
 
 .content {
   flex: 1;
-  padding: var(--space-5);
-  max-width: 1200px;
+  padding: clamp(var(--space-4), 4vw, var(--space-6));
+  max-width: 1280px;
   margin-inline: auto;
   width: 100%;
 }
 
 .pageTitle {
-  margin: 0 0 var(--space-5);
-  font-size: 1.5rem;
+  margin: 0 0 var(--space-4);
+  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  line-height: 1.25;
+}
+
+@media (min-width: 900px) {
+  .content {
+    padding-inline: var(--space-6);
+  }
 }

@@ -1,17 +1,28 @@
 {
   "app": {
     "name": "ThesisFlow",
-    "tagline": "Final projects and thesis management"
+    "tagline": "A friendly place to manage your final project or thesis",
+    "partnerLine": "Developed in collaboration with Holon Institute of Technology (HIT)",
+    "footerNote": "Demo for students and faculty — we're here to help at every step.",
+    "hitWebsite": "HIT website",
+    "mvpBadge": "MVP"
   },
   "nav": {
-    "dashboard": "Dashboard",
+    "openNavigation": "Open navigation menu",
+    "closeMenu": "Close menu",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "navigationMenu": "Main navigation",
+    "dashboard": "My dashboard",
     "login": "Login",
     "proposals": "Project proposals",
     "submissions": "Submissions",
     "reviews": "Reviews & approvals",
     "defense": "Defense exams",
     "admin": "Admin settings",
-    "logout": "Log out"
+    "logout": "Log out",
+    "notifications": "Notifications",
+    "unreadLabel": "unread"
   },
   "common": {
     "loading": "Loading…",
@@ -28,6 +39,7 @@
     "all": "All"
   },
   "login": {
+    "welcomeSubtitle": "Welcome. Track proposals, submissions, reviews, and your defense milestones — simply, in one place.",
     "title": "Sign in",
     "email": "Email",
     "password": "Password",
