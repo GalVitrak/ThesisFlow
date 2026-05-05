@@ -1,0 +1,61 @@
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.metricLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.metricValue {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.spacer {
+  height: 16px;
+}
+
+.ctaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.ctaText {
+  margin: 0;
+  font-weight: 600;
+}
+
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+}
+
+.list {
+  margin: 0;
+  padding-inline-start: 20px;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.emptyText {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.inlineLink {
+  color: var(--color-accent);
+  text-decoration: none;
+}
