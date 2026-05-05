@@ -37,7 +37,6 @@ function Inner() {
   }, [user]);
 
   if (!user || !m) return null;
-  const currentMilestone = milestones.find((x) => x.status === "pending") ?? milestones[0];
   const pendingDeadlines = milestones
     .filter((x) => x.status !== "approved")
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
